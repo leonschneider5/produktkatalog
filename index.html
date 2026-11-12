@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azubi-Verkauf</title>
+    <style>
+        /* Base Reset & Variables */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: #f4f6f8;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 3rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a252f;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Grid Layout */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Product Card Styling */
+        .product-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image Wrapper */
+        .img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-color: #e9ecef;
+            overflow: hidden;
+			display: flex;          
+			align-items: center;
+			justify-content: center;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 0.25s ease, transform 0.4s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.04);
+        }
+
+        /* Product Content */
+        .product-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0078d4;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Toggle Button Styling */
+        .btn-toggle {
+            background-color: #f0f4f8;
+            color: #0078d4;
+            border: 1px solid #d0e1f9;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            width: 100%;
+            outline: none;
+            user-select: none;
+        }
+
+        .btn-toggle:hover {
+            background-color: #0078d4;
+            color: #ffffff;
+            border-color: #0078d4;
+        }
+
+        /* Rotatable Arrow Icon */
+        .arrow {
+            display: inline-block;
+            transition: transform 0.4s ease;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .product-card.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Smooth Expand/Collapse Animation Container */
+        .product-description {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), opacity 0.3s ease, margin-top 0.3s ease, padding 0.3s ease;
+            margin-top: 0;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #0078d4;
+        }
+
+        .product-card.open .product-description {
+            max-height: 800px; /* High enough capacity to unfold fully */
+            opacity: 1;
+            margin-top: 1rem;
+            padding: 1rem 1.2rem;
+            transition: max-height 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s ease, margin-top 0.3s ease;
+        }
+
+        .product-description h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+        }
+
+        .product-description ul {
+            padding-left: 1.2rem;
+        }
+
+        .product-description li {
+            font-size: 0.9rem;
+            color: #606f7b;
+            margin-bottom: 0.35rem;
+        }
+
+        .product-description li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsive spacing fine-tuning */
+        @media (max-width: 600px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Angebotene Produkte</h1>
+            <p>Entdecke genauere Infos zu unseren Verkaufsobjekten</p>
+        </header>
+
+        <main class="product-grid">
+
+            <!-- Produkt 1 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Kamera1.jpeg" alt="Panasonic Camcorder" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Panasonic Camcorder</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Panasonic AG-AC160AEJ</li>
+                            
+							
+							<img src="bilder/Kamera2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+							<img src="bilder/Kamera3.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">	
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Produkt 2 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Box1.jpeg" alt="Makita Box" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Makita Box</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Makita Box</li>
+                            
+							
+							<img src="bilder/Box2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+								
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			<!-- Produkt 3 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Oszi1.jpeg" alt="Oszi" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Oszilloskop</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Oszilloskop HM205-3</li>
+                            
+							
+							<img src="bilder/Oszi2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+							<img src="bilder/Oszi3.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">	
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			<!-- Produkt 4 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Winkelschleifer1.jpeg" alt="Winkelschleifer" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Winkelschleifer</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Bosch Professional GWS 1000</li>
+                            
+							
+							<img src="bilder/Winkelschleifer2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+						
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			<!-- Produkt 5 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Prüfer1.jpeg" alt="Prüfgerät" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Unitest 9032 Tester</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Unitest 9032 Tester FTV00009032D</li>
+                            
+							
+							<img src="bilder/Prüfer2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+						
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 6 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Brille2.jpeg" alt="Smart Glasses" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Smart Glasses</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>EPSON Smart Glasses BT-300</li>
+                            
+							
+							<img src="bilder/Brille1.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+						
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			<!-- Produkt 7 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Ratschensatz.jpeg" alt="Ratschensatz" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Ratschensatz</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Ratschensatz (unvollständig)</li>
+                            
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 8 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Toolson2.jpeg" alt="Bohrhammer" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Bohrhammer</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Toolson Pro BH 900</li>
+                            
+							
+							<img src="bilder/Toolson1.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			<!-- Produkt 9 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/OsziKlein1.jpeg" alt="OsziKlein" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Oszilloskop</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Personal Scope HPS10</li>
+                            
+							
+							<img src="bilder/OsziKlein2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+						
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 10 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Netzgerät2.jpeg" alt="Labornetzgerät" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Labornetzgerät</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Basetech BT-305</li>
+                            
+							
+							<img src="bilder/Netzgerät1.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 11 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Kamerastativ2.jpeg" alt="Kamerastativ" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Kamerastativ</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Manfrotto F 1101264</li>
+                            
+							
+							<img src="bilder/Kamerastativ1.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 12 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Bohrer1.jpeg" alt="Bohrmaschine" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Bohrmaschine</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Bosch Professional GSB16RE</li>
+                            
+							
+							<img src="bilder/Bohrer2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 13 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Akkuschrauber1.jpeg" alt="Akkuschrauber" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Akkuschrauber</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Makita BDF446</li>
+                            
+							
+							<img src="bilder/Akkuschrauber2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			
+			<!-- Produkt 14 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Leuchten1.jpeg" alt="Leuchten" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">LED-Leuchten</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Walimex PRO LED 2er Set</li>
+                            
+							
+							<img src="bilder/Leuchten2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+			<!-- Produkt 15 -->
+            <article class="product-card">
+                <div class="img-wrapper">
+                    <img src="bilder/Leuchtstativ1.jpeg" alt="Leuchtstativ" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h2 class="product-title">Leuchtstativ</h2>
+                    <div class="product-price">10,00 €</div>
+
+                    <button class="btn-toggle" aria-expanded="false">
+                        <span class="btn-text">Details anzeigen</span>
+                        <span class="arrow">▼</span>
+                    </button>
+
+                    <div class="product-description">
+                        <h4>Details:</h4>
+                        <ul>
+                            <li>Walimex Leuchtstativ</li>
+                            
+							
+							<img src="bilder/Leuchtstativ2.jpeg" 
+								alt="Detailansicht" 
+								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+				 
+                        </ul>
+                    </div>
+                </div>
+            </article>
+			
+
+        </main>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const toggleButtons = document.querySelectorAll('.btn-toggle');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    
+                    const card = button.closest('.product-card');
+                    const btnText = button.querySelector('.btn-text');
+                    
+                    
+                    const isOpen = card.classList.toggle('open');
+
+                    
+                    if (isOpen) {
+                        btnText.textContent = 'Details verbergen';
+                        button.setAttribute('aria-expanded', 'true');
+                    } else {
+                        btnText.textContent = 'Details anzeigen';
+                        button.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
