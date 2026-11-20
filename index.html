@@ -199,8 +199,169 @@
                 font-size: 2rem;
             }
         }
+   
+   
+        .extra-section {
+            margin-top: 3.5rem;
+        }
+
+        .extra-card {
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 120, 212, 0.12);
+            border-top: 5px solid #0078d4;
+            padding: 2.25rem 2rem;
+            text-align: center;
+        }
+
+        .extra-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .extra-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .extra-header h2 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #1a252f;
+        }
+
+        .extra-header p {
+            color: #7f8c8d;
+            font-size: 1rem;
+            max-width: 560px;
+        }
+
+        .extra-badge {
+            background-color: #e6f2fc;
+            color: #0078d4;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .extra-card .btn-toggle {
+            max-width: 360px;
+            margin: 0 auto;
+            padding: 13px 20px;
+            font-size: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 120, 212, 0.08);
+        }
+
+        .extra-card .product-description {
+            border-left: none;
+            border-top: 3px solid #0078d4;
+            text-align: center;
+            background-color: #f8fafc;
+        }
+
+        /* Größere Aufklapphöhe für viele Kabel */
+        .extra-card.open .product-description {
+            max-height: 6000px;
+            padding: 1.75rem 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .extra-card .product-description h4 {
+            text-align: center;
+            font-size: 1.05rem;
+            color: #1a252f;
+            margin-bottom: 1rem;
+        }
+
+       
+        .cable-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .cable-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.15rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .cable-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+            border-color: #bdd7f1;
+        }
+
+        .cable-item img {
+            width: 100%;
+            height: 135px;
+            object-fit: contain;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 6px;
+            margin-bottom: 0.85rem;
+        }
+
+        .cable-item h5 {
+            font-size: 1.02rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .cable-item p {
+            font-size: 0.86rem;
+            color: #606f7b;
+            margin-bottom: 0.65rem;
+        }
+
+        .cable-price {
+            font-weight: 700;
+            color: #0078d4;
+            font-size: 1rem;
+            background-color: #f0f7ff;
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        /* Responsive spacing fine-tuning */
+        @media (max-width: 600px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .extra-card {
+                padding: 1.5rem 1.1rem;
+            }
+
+            .extra-header h2 {
+                font-size: 1.35rem;
+            }
+        }
     </style>
 </head>
+   
 <body>
 
     <div class="container">
@@ -654,6 +815,7 @@
 							<img src="bilder/Leuchtstativ2.jpeg" 
 								alt="Detailansicht" 
 								style="width: 100%; border-radius: 6px; margin-top: 0.8rem;">
+							
 				 
                         </ul>
                     </div>
@@ -662,6 +824,227 @@
 			
 
         </main>
+		
+		
+		
+		
+		
+        <section class="extra-section">
+            <article class="product-card extra-card">
+                <div class="extra-header">
+                    <span class="extra-badge">Kabel</span>
+                    <h2>Unsere Kabelangebote</h2>
+                </div>
+
+                <button class="btn-toggle" aria-expanded="false" data-open-text="Kabel-Übersicht schließen" data-closed-text="Alle Kabel anzeigen">
+                    <span class="btn-text">Alle Kabel anzeigen</span>
+                    <span class="arrow">▼</span>
+                </button>
+
+                <div class="product-description">
+                    <h4>Verfügbare Kabel</h4>
+                    
+					
+					<div class="cable-category">
+						<h4 class="cable-category-title">H07V-K</h4>
+					
+					
+                    <div class="cable-grid">
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KBlau15.jpg" alt="Kabel1">
+                                <h5>H07V-K Blau</h5>
+								<p>1,5 mm²</p>
+                                <p>Länge: ca. 85 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KSchwarz15.jpg" alt="Kabel2">
+                                <h5>H07V-K Schwarz</h5>
+                                <p>1,5 mm²</p>
+                                <p>Länge: ca. 85 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KSchwarz15.jpg" alt="Kabel3">
+                                <h5>H07V-K Schwarz</h5>
+                                <p>1,5 mm²</p>
+                                <p>Länge: ca. 70 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KSchwarz15.jpg" alt="Kabel4">
+                                <h5>H07V-K Schwarz</h5>
+                                <p>2,5 mm²</p>
+                                <p>Länge: ca. 65 m</p>
+                            </div>
+                            <div class="cable-price">1,50 €</div>
+                        </div>
+						
+						<div class="cable-item">
+                            <div>
+                                <img src="bilder/7KGelb15.jpg" alt="Kabel1">
+                                <h5>H07V-K Gelb/Grün</h5>
+                                <p>1,5 mm²</p>
+                                <p>Länge: ca. 85 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KGelb15.jpg" alt="Kabel2">
+                                <h5>H07V-K Gelb/Grün</h5>
+                                <p>1,5 mm²</p>
+                                <p>Länge: ca. 55 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KGelb15.jpg" alt="Kabel3">
+                                <h5>H07V-K Gelb/Grün</h5>
+                                <p>2,5 mm²</p>
+                                <p>Länge: ca. 70 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7KGelb4.jpg" alt="Kabel4">
+                                <h5>H07V-K Gelb/Grün</h5>
+                                <p>4 mm²</p>
+                                <p>Länge: ca. 50 m</p>
+                            </div>
+                            <div class="cable-price">1,50 €</div>
+                        </div>
+						
+                    </div>
+					
+					
+					
+					<div class="cable-category">
+						<h4 class="cable-category-title">H07V-U</h4>
+					
+					
+                    <div class="cable-grid">
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7USchwarz.jpg" alt="Kabel1">
+                                <h5>H07V-U Schwarz</h5>
+                                 <p>1,5 mm²</p>
+								 <p>Länge: ca. 90 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7UBlau.jpg" alt="Kabel2">
+                                <h5>H07V-U Blau</h5>
+                                 <p>1,5 mm²</p>
+								 <p>Länge: ca. 90 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/7UGelb.jpg" alt="Kabel3">
+                                <h5>H07V-U Gelb/Grün</h5>
+                                 <p>1,5 mm²</p>
+								 <p>Länge: ca. 90 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                    </div>
+					
+					
+					
+					
+					<div class="cable-category">
+						<h4 class="cable-category-title">H05V-K</h4>
+					
+					
+                    <div class="cable-grid">
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/5KRot.jpg" alt="Kabel1">
+                                <h5>H05V-K Rot</h5>
+                                 <p>0,75 mm²</p>
+								 <p>Länge: ca. 90 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/5KSchwarz.jpg" alt="Kabel2">
+                                 <h5>H05V-K Schwarz</h5>
+                                 <p>0,5 mm²</p>
+								 <p>Länge: ca. 90 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/5KSchwarz.jpg" alt="Kabel3">
+                                 <h5>H05V-K Schwarz</h5>
+                                 <p>0,5 mm²</p>
+								 <p>Länge: ca. 55 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+
+                        <div class="cable-item">
+                            <div>
+                                <img src="bilder/5KBlau.jpg" alt="Kabel4">
+                                 <h5>H05V-K Blau</h5>
+                                 <p>0,75 mm²</p>
+								 <p>Länge: ca. 55 m</p>
+                            </div>
+                            <div class="cable-price">1,50 €</div>
+                        </div>
+						
+						<div class="cable-item">
+                            <div>
+                                <img src="bilder/5KBlau.jpg" alt="Kabel2">
+                                 <h5>H05V-K Blau</h5>
+                                 <p>0,75 mm²</p>
+								 <p>Länge: ca. 80 m</p>
+                            </div>
+                            <div class="cable-price">2,00 €</div>
+                        </div>
+						
+                    </div>
+					
+					
+					<p>(Es handelt sich bei den Bildern der Kabel lediglich um Beispielbilder)</p>
+					
+
+                </div>
+            </article>
+        </section>
+		
+		
+		
+		
+		
+		
+		
     </div>
 
 
